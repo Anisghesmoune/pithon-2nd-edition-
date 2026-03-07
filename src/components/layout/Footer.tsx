@@ -53,9 +53,9 @@ background: "radial-gradient(ellipse 80% 80% at 50% 50%, #B08CFF 0%, #B08CFF 26%
           {/* Social Icons */}
           <div style={{ display: "flex", gap: 10 }}>
             {[
-              { label: "Facebook", icon: "/fb.png", href: "#" },
-              { label: "Instagram", icon: "/insta.png", href: "#" },
-              { label: "LinkedIn", icon: "/linkedin.png", href: "#" },
+              { label: "Facebook", icon: "/fb.png", href: "https://www.facebook.com/share/1D3dXCJ22T/?mibextid=wwXIfr" },
+              { label: "Instagram", icon: "/insta.png", href: "https://www.instagram.com/math.tecc?igsh=N2d1OTg2c2JibnE4" },
+              { label: "LinkedIn", icon: "/linkedin.png", href: "https://www.linkedin.com/company/mathtec/" },
             ].map((s) => (
               <a key={s.label} href={s.href} aria-label={s.label} style={{
                 width: 42,

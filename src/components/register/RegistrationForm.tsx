@@ -31,12 +31,10 @@ export default function RegistrationForm() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    // Clear submit errors for this field
     if (submitErrors[name as keyof FormData]) {
       setSubmitErrors({ ...submitErrors, [name]: "" });
     }
 
-    // Real-time validation only for email and telephone
     if (name === "email") {
       if (value.length === 0) setEmailState("idle");
       else if (value.includes("@") && value.includes(".")) setEmailState("valid");
@@ -52,7 +50,6 @@ export default function RegistrationForm() {
 
   const getInputStyle = (name: keyof FormData) => {
     let shadow = "0 0 0 1.5px #9810FA";
-
     if (name === "email") {
       if (emailState === "valid") shadow = "0 0 0 2px #22c55e";
       else if (emailState === "invalid") shadow = "0 0 0 2px #f87171";
@@ -62,7 +59,6 @@ export default function RegistrationForm() {
     } else if (submitErrors[name]) {
       shadow = "0 0 0 2px #f87171";
     }
-
     return {
       width: "100%",
       background: "rgba(255,255,255,0.68)",
@@ -113,8 +109,6 @@ export default function RegistrationForm() {
     }
     setLoading(false);
   };
-
-  const inputStyle = getInputStyle;
 
   return (
     <section style={{
@@ -187,39 +181,85 @@ export default function RegistrationForm() {
               {/* Nom + Prénom */}
               <div style={{ display: "flex", gap: 12 }}>
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
-                  <input name="nom" placeholder="Nom" value={formData.nom} onChange={handleChange} style={inputStyle("nom")} />
+                  <input
+                    name="nom"
+                    placeholder="Nom"
+                    value={formData.nom}
+                    onChange={handleChange}
+                    style={getInputStyle("nom")}
+                  />
                   {submitErrors.nom && <p style={{ color: "#f87171", fontSize: 12, margin: "0 0 0 12px" }}>⚠ {submitErrors.nom}</p>}
                 </div>
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
-                  <input name="prenom" placeholder="Prénom" value={formData.prenom} onChange={handleChange} style={inputStyle("prenom")} />
+                  <input
+                    name="prenom"
+                    placeholder="Prénom"
+                    value={formData.prenom}
+                    onChange={handleChange}
+                    style={getInputStyle("prenom")}
+                  />
                   {submitErrors.prenom && <p style={{ color: "#f87171", fontSize: 12, margin: "0 0 0 12px" }}>⚠ {submitErrors.prenom}</p>}
                 </div>
               </div>
 
               {/* Date de naissance */}
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <input name="dateNaissance" type="date" value={formData.dateNaissance} onChange={handleChange} style={inputStyle("dateNaissance")} />
-                {submitErrors.dateNaissance && <p style={{ color: "#f87171", fontSize: 12, margin: "0 0 0 12px" }}>⚠ {submitErrors.dateNaissance}</p>}
+                <input
+                  name="dateNaissance"
+                  type="text"
+                  placeholder="Date de naissance (JJ/MM/AAAA)"
+                  value={formData.dateNaissance}
+                  onChange={handleChange}
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={(e) => {
+                    if (!e.target.value) e.target.type = "text";
+                  }}
+                  style={getInputStyle("dateNaissance")}
+                />
+                {submitErrors.dateNaissance && (
+                  <p style={{ color: "#f87171", fontSize: 12, margin: "0 0 0 12px" }}>⚠ {submitErrors.dateNaissance}</p>
+                )}
               </div>
 
               {/* Niveau scolaire */}
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <input name="niveauScolaire" placeholder="Niveau scolaire" value={formData.niveauScolaire} onChange={handleChange} style={inputStyle("niveauScolaire")} />
-                {submitErrors.niveauScolaire && <p style={{ color: "#f87171", fontSize: 12, margin: "0 0 0 12px" }}>⚠ {submitErrors.niveauScolaire}</p>}
+                <input
+                  name="niveauScolaire"
+                  placeholder="Niveau scolaire"
+                  value={formData.niveauScolaire}
+                  onChange={handleChange}
+                  style={getInputStyle("niveauScolaire")}
+                />
+                {submitErrors.niveauScolaire && (
+                  <p style={{ color: "#f87171", fontSize: 12, margin: "0 0 0 12px" }}>⚠ {submitErrors.niveauScolaire}</p>
+                )}
               </div>
 
               {/* Email */}
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <input name="email" placeholder="Email" type="email" value={formData.email} onChange={handleChange} style={inputStyle("email")} />
+                <input
+                  name="email"
+                  placeholder="Email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  style={getInputStyle("email")}
+                />
                 {emailState === "valid" && <p style={{ color: "#22c55e", fontSize: 12, margin: "0 0 0 12px" }}>✓ Email valide</p>}
                 {emailState === "invalid" && <p style={{ color: "#f87171", fontSize: 12, margin: "0 0 0 12px" }}>⚠ Entrez un email valide (ex: nom@gmail.com)</p>}
               </div>
 
               {/* Téléphone */}
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <input name="telephone" placeholder="Téléphone (ex: 0612345678)" value={formData.telephone} onChange={handleChange} style={inputStyle("telephone")} />
+                <input
+                  name="telephone"
+                  placeholder="Téléphone (ex: 0612345678)"
+                  value={formData.telephone}
+                  onChange={handleChange}
+                  style={getInputStyle("telephone")}
+                />
                 {phoneState === "valid" && <p style={{ color: "#22c55e", fontSize: 12, margin: "0 0 0 12px" }}>✓ Numéro valide</p>}
-                {phoneState === "invalid" && <p style={{ color: "#f87171", fontSize: 12, margin: "0 0 0 12px" }}>⚠ Veuillez entrer un numéro de téléphone valide.</p>}
+                {phoneState === "invalid" && <p style={{ color: "#f87171", fontSize: 12, margin: "0 0 0 12px" }}>⚠ Doit commencer par 05, 06 ou 07 et avoir 10 chiffres</p>}
               </div>
 
               {/* Global error */}
@@ -260,16 +300,21 @@ export default function RegistrationForm() {
           )}
         </div>
 
-        {/* Right — Πthon title */}
-        <div style={{ flex: 1, minWidth: 280, textAlign: "center",marginLeft: 80,display:"flex", alignContent: "center" }}>
-         
-        <Image 
-                 src="/Group.png" 
-                 alt="Pi-thon 2nd Edition" 
-                 width={400} 
-                 height={400} 
-                 style={{ objectFit: "contain" }} 
-               />
+        {/* Right — Image */}
+        <div style={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minWidth: 280,
+        }}>
+          <Image
+            src="/Group.png"
+            alt="Pi-thon 2nd Edition"
+            width={400}
+            height={400}
+            style={{ objectFit: "contain", maxWidth: "100%" }}
+          />
         </div>
 
       </div>

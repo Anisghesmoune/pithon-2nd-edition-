@@ -11,7 +11,7 @@ export default function AboutMathtec() {
       style={{
         position: "relative",
         background: "#0a0a0a",
-        padding: "80px 160px",
+        padding: "clamp(40px, 8vw, 80px) clamp(20px, 8vw, 160px)",
         overflow: "hidden",
       }}
     >
@@ -33,40 +33,51 @@ export default function AboutMathtec() {
 
       {/* Title */}
       <div style={{ textAlign: "center", marginBottom: 60, position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontFamily: aldrich.style.fontFamily, color: "white", fontSize: 36, fontWeight: 400 }}>
+        <h2 style={{
+          fontFamily: aldrich.style.fontFamily,
+          color: "white",
+          fontSize: "clamp(24px, 5vw, 36px)",
+          fontWeight: 400,
+        }}>
           À propos de{" "}
-<span style={{
-  background: "linear-gradient(90deg, #661FFF, #FF1994)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
-  backgroundClip: "text",
-}}>
-  MATHTEC
-</span>        </h2>
+          <span style={{
+            background: "linear-gradient(90deg, #661FFF, #FF1994)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}>
+            MATHTEC
+          </span>
+        </h2>
       </div>
 
       {/* Content */}
       <div style={{
         position: "relative", zIndex: 1,
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "space-between",
-        gap: 60,
-        flexWrap: "wrap",
+        gap: 40,
       }}>
-        {/* Left — text */}
-        <div style={{ maxWidth: 580 }}>
-          <p style={{ fontFamily: michroma.style.fontFamily, color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.9, marginBottom: 20 }}>
+        {/* Text */}
+        <div style={{ width: "100%", maxWidth: 580, textAlign: "center" }}>
+          <p style={{
+            fontFamily: michroma.style.fontFamily,
+            color: "rgba(255,255,255,0.7)",
+            fontSize: "clamp(12px, 2vw, 14px)",
+            lineHeight: 1.9,
+            marginBottom: 20,
+          }}>
             MathTec est une initiative dirigée par des jeunes, fondée par
             des étudiantes passionnées de mathématiques.<br />
             Notre mission est de rendre les mathématiques appliquées :
           </p>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          <ul style={{ listStyle: "none", padding: 0, margin: "0 auto", display: "inline-block", textAlign: "left" }}>
             {["Accessibles", "Dynamiques", "Créatives", "Concrètes"].map((item) => (
               <li key={item} style={{
                 fontFamily: michroma.style.fontFamily,
                 color: "rgba(255,255,255,0.65)",
-                fontSize: 14,
+                fontSize: "clamp(12px, 2vw, 14px)",
                 lineHeight: 2,
                 paddingLeft: 16,
                 position: "relative",
@@ -78,9 +89,15 @@ export default function AboutMathtec() {
           </ul>
         </div>
 
-        {/* Right — logo */}
-        <div style={{ flex: 1, display: "flex", justifyContent: "center", minWidth: 200 }}>
-          <Image src="/logo2.png" alt="MathTec" width={280} height={120} style={{ objectFit: "contain" }} />
+        {/* Logo */}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Image
+            src="/logo2.png"
+            alt="MathTec"
+            width={280}
+            height={120}
+            style={{ objectFit: "contain" }}
+          />
         </div>
       </div>
     </section>
