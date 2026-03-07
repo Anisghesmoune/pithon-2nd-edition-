@@ -29,6 +29,16 @@ export default function RegistrationForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (name === "dateNaissance") {
+      let val = value.replace(/\D/g, "");
+      if (val.length >= 3) val = val.slice(0, 2) + "/" + val.slice(2);
+      if (val.length >= 6) val = val.slice(0, 5) + "/" + val.slice(5, 9);
+      setFormData({ ...formData, dateNaissance: val });
+      if (submitErrors.dateNaissance) setSubmitErrors({ ...submitErrors, dateNaissance: "" });
+      return;
+    }
+
     setFormData({ ...formData, [name]: value });
 
     if (submitErrors[name as keyof FormData]) {
@@ -74,13 +84,23 @@ export default function RegistrationForm() {
     };
   };
 
+  const validateDate = (date: string) => {
+    if (!date || date.length < 10) return false;
+    const [day, month, year] = date.split("/").map(Number);
+    if (!day || !month || !year) return false;
+    if (day < 1 || day > 31) return false;
+    if (month < 1 || month > 12) return false;
+    if (year < 1900 || year > new Date().getFullYear()) return false;
+    return true;
+  };
+
   const handleSubmit = async () => {
     setError("");
     const errors: Partial<Record<keyof FormData, string>> = {};
 
     if (!formData.nom || formData.nom.length < 2) errors.nom = "Veuillez entrer votre nom.";
     if (!formData.prenom || formData.prenom.length < 2) errors.prenom = "Veuillez entrer votre prénom.";
-    if (!formData.dateNaissance) errors.dateNaissance = "Veuillez entrer votre date de naissance.";
+    if (!validateDate(formData.dateNaissance)) errors.dateNaissance = "Date invalide (ex: 07/03/2006).";
     if (!formData.niveauScolaire) errors.niveauScolaire = "Veuillez entrer votre niveau scolaire.";
     if (emailState !== "valid") errors.email = "Veuillez entrer un email valide.";
     if (phoneState !== "valid") errors.telephone = "Numéro invalide (ex: 0612345678).";
@@ -204,20 +224,57 @@ export default function RegistrationForm() {
 
               {/* Date de naissance */}
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <input
-                  name="dateNaissance"
-                  type="text"
-                  placeholder="Date de naissance (JJ/MM/AAAA)"
-                  value={formData.dateNaissance}
-                  onChange={handleChange}
-                  onFocus={(e) => (e.target.type = "date")}
-                  onBlur={(e) => {
-                    if (!e.target.value) e.target.type = "text";
-                  }}
-                  style={getInputStyle("dateNaissance")}
-                />
+                <div style={{ position: "relative" }}>
+                  <input
+                    name="dateNaissance"
+                    type="text"
+                    placeholder="Date de naissance (JJ/MM/AAAA)"
+                    value={formData.dateNaissance}
+                    onChange={handleChange}
+                    maxLength={10}
+                    style={getInputStyle("dateNaissance")}
+                  />
+                  {/* Hidden date input triggered by calendar icon */}
+                  <input
+                    type="date"
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        const [year, month, day] = e.target.value.split("-");
+                        const formatted = `${day}/${month}/${year}`;
+                        setFormData({ ...formData, dateNaissance: formatted });
+                        if (submitErrors.dateNaissance) setSubmitErrors({ ...submitErrors, dateNaissance: "" });
+                      }
+                    }}
+                    style={{
+                      position: "absolute",
+                      right: 16,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      width: 28,
+                      height: 28,
+                      opacity: 0,
+                      cursor: "pointer",
+                      zIndex: 2,
+                    }}
+                  />
+                  {/* Calendar emoji visible on top */}
+                  <span style={{
+                    position: "absolute",
+                    right: 16,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    fontSize: 18,
+                    pointerEvents: "none",
+                    zIndex: 1,
+                  }}>
+                    📅
+                  </span>
+                </div>
                 {submitErrors.dateNaissance && (
                   <p style={{ color: "#f87171", fontSize: 12, margin: "0 0 0 12px" }}>⚠ {submitErrors.dateNaissance}</p>
+                )}
+                {formData.dateNaissance.length === 10 && validateDate(formData.dateNaissance) && (
+                  <p style={{ color: "#22c55e", fontSize: 12, margin: "0 0 0 12px" }}>✓ Date valide</p>
                 )}
               </div>
 
@@ -256,6 +313,7 @@ export default function RegistrationForm() {
                   placeholder="Téléphone (ex: 0612345678)"
                   value={formData.telephone}
                   onChange={handleChange}
+                  maxLength={10}
                   style={getInputStyle("telephone")}
                 />
                 {phoneState === "valid" && <p style={{ color: "#22c55e", fontSize: 12, margin: "0 0 0 12px" }}>✓ Numéro valide</p>}
