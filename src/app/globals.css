@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@source "../components/**/*.{ts,tsx}";
+@source "../app/**/*.{ts,tsx}";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: #0d0118;
+  color: white;
+}
+input::placeholder {
+  color: #9810FA;
+  opacity: 1;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+}
+
+/* Gradient border trick */
+input {
+  background-clip: padding-box;
+  box-shadow: 0 0 0 1.5px #9810FA;
+}
+
+input:focus {
+  box-shadow: 0 0 0 2px #761AFD;
+}
