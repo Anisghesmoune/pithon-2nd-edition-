@@ -111,11 +111,19 @@ export default function AboutPithon() {
               borderRadius: 12,
               overflow: "hidden",
               minWidth: isMobile ? "260px" : "380px",
-              height: isMobile ? "200px" : "300px",
+              height: isMobile ? "160px" : "300px",
               flexShrink: 0,
-              background: "#1a0a2e",
+              background: "#0a0a0a",
             }}>
-              <img src={src} alt={`Photo ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img
+                src={src}
+                alt={`Photo ${i + 1}`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: isMobile ? "contain" : "cover",
+                }}
+              />
             </div>
           ))
         )}
