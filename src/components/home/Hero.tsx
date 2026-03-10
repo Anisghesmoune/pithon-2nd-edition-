@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { Michroma } from "next/font/google";
@@ -72,21 +73,30 @@ export default function Hero() {
           Rejoignez la deuxième édition du Pi-thon, une compétition immersive combinant
           mathématiques, programmation et entrepreneuriat.
         </p>
-        <Link href="/register" style={{
-          marginTop: 18,
-          background: "linear-gradient(90deg,#8b5cf6,#7c3aed)",
-          color: "white",
-          fontFamily: "var(--font-michroma)",
-
-          padding: "14px 36px",
-          borderRadius: 999,
-          fontSize: 14,
-          fontWeight: 800,
-          letterSpacing: "0.06em",
-          textDecoration: "none",
-          display: "inline-block",
-          boxShadow: "0 12px 40px rgba(124,58,237,0.28)",
-        }}>
+        <Link
+          href="/register"
+          style={{
+            marginTop: 18,
+            background: "linear-gradient(90deg,#8b5cf6,#7c3aed)",
+            color: "white",
+            fontFamily: "var(--font-michroma)",
+            padding: "14px 36px",
+            borderRadius: 999,
+            fontSize: 14,
+            fontWeight: 800,
+            letterSpacing: "0.06em",
+            textDecoration: "none",
+            display: "inline-block",
+            boxShadow: "0 12px 40px rgba(124,58,237,0.28)",
+            transition: "transform 0.2s ease",
+          }}
+          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+            e.currentTarget.style.transform = "scale(1.05)";
+          }}
+          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+            e.currentTarget.style.transform = "scale(1)";
+          }}
+        >
           S'INSCRIRE MAINTENANT
         </Link>
       </div>
